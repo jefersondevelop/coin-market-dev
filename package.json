@@ -1,8 +1,8 @@
 {
   "name": "coin-market-dev",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "This is API REST To see BTC , ETH, DASH,  PTR (Petros), BS (Bolívares) and Euro values based on USD Dolar.",
+  "author": "Jeferson J. Alvarado C.",
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
