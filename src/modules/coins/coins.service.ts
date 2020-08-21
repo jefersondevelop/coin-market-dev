@@ -1,5 +1,5 @@
 import { 
-    Injectable, NotFoundException, UseGuards
+    Injectable, NotFoundException, UseGuards, UnprocessableEntityException
 } from "@nestjs/common";
 import { configService } from "../../config/config.service";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -146,18 +146,22 @@ export class CoinService {
 
     async changeExchangeUSD(currency, price){
 
-        const base = await this.coinRepository.findOne({where: { Name: currency }});
+        if(!currency||!price)
+            throw new UnprocessableEntityException('Currency and Price must be provided.')
+
+        let base = await this.coinRepository.findOne({where: { Name: currency }});
         
         if(!base)
             throw new NotFoundException(`Currency not appear on our DB. Currency Available: USDC_BTC, USDC_DASH, USDC_ETH, USDC_PTR, USDC_BS`)
         
         base.ValueUSD = price;
         
-        await base.save();
+        base = await base.save();
         
         return Object.assign({
             status: 200,
-            message: `Price for currency ${currency} was changed succesfully.`
+            message: `Price for currency ${currency} was changed succesfully.`,
+            newPrice: base.ValueUSD
         })
 
     }
@@ -165,6 +169,8 @@ export class CoinService {
     async getCurrencysAvailable(){
 
         return Object.assign({
+            status: 200,
+            base: 'USDC',
             currencies: await this.coinRepository.find()
         })
         
