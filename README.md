@@ -64,3 +64,28 @@ To see swaggers, only you need to go to
 https://coin-market-dev.herokuapp.com/documentation 
 
 ```
+
+## SERVICES
+
+```
+GET /coins/marketCoinUSD
+
+Give BTC , ETH, DASH, PTR (Petros), BS (Bolívares) and Euro values based on USD Dolar
+
+```
+
+```
+GET /coins/currencies
+
+Give All currencies for convert availables  
+
+```
+
+```
+PUT /coins
+
+Admin can update any currency exchange.
+
+```
+
+
