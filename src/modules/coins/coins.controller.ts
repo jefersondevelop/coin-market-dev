@@ -71,8 +71,8 @@ export class CoinController {
     }
 
     @Get('/convertCurrency')
-    async convertCurrency(@Query('from') currencyFrom : string, @Query('to') currencyTo : string) {
-        return this.coinService.convertCurrency(currencyFrom, currencyTo)
+    async convertCurrency(@Query('from') currencyFrom : string, @Query('to') currencyTo : string, @Body('ammount') ammount : number) {
+        return this.coinService.convertCurrency(currencyFrom, currencyTo, ammount)
     }
 
 }

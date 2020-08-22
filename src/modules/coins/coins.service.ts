@@ -268,15 +268,18 @@ export class CoinService {
         }) 
     }
 
-    async convertCurrency(from:string, to:string) {
+    async convertCurrency(from:string, to:string, ammount) {
 
         var response;
 
         try {
             
-            if(!from||!to)
-                throw new UnprocessableEntityException('Origin Currency and Target Currency must provided');
-    
+            if(!from||!to || (ammount ===null) || (ammount === undefined))
+                throw new UnprocessableEntityException('Origin Currency, Target Currency and ammount must provided');
+            
+            if(parseInt(ammount) < 0)
+                throw new UnprocessableEntityException('Ammount must be a positive number.')
+
             let fromCurrency = staticCurrencies().indexOf(from.toUpperCase());
             let toCurrency = staticCurrencies().indexOf(to.toUpperCase());
     
@@ -294,7 +297,7 @@ export class CoinService {
                 response = Object.assign({
                     status: 200,
                     message: `Conversion for currency: From: ${from.toUpperCase()} To: ${to.toUpperCase()}`,
-                    [`${from.toUpperCase()}_${to.toUpperCase()}`]: response[`${from.toUpperCase()}_${to.toUpperCase()}`].val
+                    [`${from.toUpperCase()}_${to.toUpperCase()}`]: response[`${from.toUpperCase()}_${to.toUpperCase()}`].val * ammount
                 })
             }else{
 
@@ -307,7 +310,7 @@ export class CoinService {
                 response = Object.assign({
                     status: 200,
                     message: `Conversion for currency: From: ${from.toUpperCase()} To: ${to.toUpperCase()}`,
-                    [`${from.toUpperCase()}_${to.toUpperCase()}`]: (response !== null && response !== undefined)? response : 'No hay datos'
+                    [`${from.toUpperCase()}_${to.toUpperCase()}`]: (response !== null && response !== undefined)? response * ammount : 'No hay datos'
                 })
     
     
@@ -333,7 +336,7 @@ export class CoinService {
             response = Object.assign({
                 status: 200,
                 message: `Conversion for currency: From: ${from.toUpperCase()} To: ${to.toUpperCase()}`,
-                [`${from.toUpperCase()}_${to.toUpperCase()}`]: (response !== null && response !== undefined)? response : 'No hay datos'
+                [`${from.toUpperCase()}_${to.toUpperCase()}`]: (response !== null && response !== undefined)? response * ammount : 'No hay datos'
             })
 
         }

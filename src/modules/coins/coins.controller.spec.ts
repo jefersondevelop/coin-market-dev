@@ -101,7 +101,7 @@ describe('Auth Controller', () => {
 
     it('Should convert BTC TO BS currency', async () => {
 
-      let response = await controller.convertCurrency('BTC', 'bs');
+      let response = await controller.convertCurrency('BTC', 'bs', 1);
 
       expect(response.status).toBe(200);
       
@@ -109,7 +109,7 @@ describe('Auth Controller', () => {
 
     it('Should return an error because currency was not found to convert.', async () => {
       try {
-        let response = await controller.convertCurrency('YUANG', 'BS');
+        let response = await controller.convertCurrency('YUANG', 'BS', 1);
         expect(response).toBe(null); 
       } catch (error) {
         expect(error.status).toBe(404)
