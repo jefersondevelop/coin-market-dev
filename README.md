@@ -1,4 +1,4 @@
-# API FOR JOB APPLY (NODE JS)
+# API FOR CURRENCY EXCHANGE (NODE JS)
 
 This is an app for see currencies exchange. In this case, USD base is taken to give value to BTC, DASH, ETH and others more.
 
@@ -35,7 +35,7 @@ npm run test
 ## Available on heroku
 
 ```
-https://gueno-api.herokuapp.com 
+https://coin-market-dev.herokuapp.com
 
 ```
 
@@ -61,6 +61,6 @@ https://free.currconv.com/api/v7
 To see swaggers, only you need to go to 
 
 ```
-https://gueno-api.herokuapp.com/documentation 
+https://coin-market-dev.herokuapp.com/documentation 
 
 ```
