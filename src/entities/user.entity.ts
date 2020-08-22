@@ -1,4 +1,5 @@
 import { Entity, JoinColumn, BaseEntity, PrimaryGeneratedColumn, Column, OneToOne, ManyToMany, JoinTable, OneToMany } from 'typeorm';
+import { Role } from './role.entity';
 
 @Entity("User",{schema:"public" })
 export class User extends BaseEntity {
@@ -31,6 +32,10 @@ export class User extends BaseEntity {
     })
     Status:number;
     
+    @OneToOne(type => Role, role => role.user)
+    @JoinColumn({name: 'roleId'})
+    role:Role;
+
 }
     
     

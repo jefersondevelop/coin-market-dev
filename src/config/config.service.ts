@@ -84,7 +84,9 @@ const configService = new ConfigService(process.env)
     "POSTGRES_PASSWORD",
     "POSTGRES_DATABASE",
     "COIN_MARKET_URL",
-    "COIN_EUR_MARKET_URL"
+    "COIN_EUR_MARKET_URL",
+    "COIN_CONVERTER_URL",
+    "COIN_CONVERTER_API_KEY"
   ]);
 
 export { configService };

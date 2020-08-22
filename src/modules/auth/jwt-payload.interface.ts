@@ -10,6 +10,7 @@
 
 export interface PayLoad {
   username: string;
+  roleId: number;
   id: number;
 }
   

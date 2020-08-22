@@ -12,6 +12,7 @@ import { verify } from "jsonwebtoken";
 import { configService } from '../../config/config.service';
 import { AuthModule } from './auth.module';
 import { RegisterDto } from './dto/register.dto';
+import { Role } from '../../entities/role.entity';
 
 describe('Auth Controller', () => {
   let controller: AuthController;
@@ -26,7 +27,7 @@ describe('Auth Controller', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports:[
         TypeOrmModule.forRoot(configService.getTypeOrmConfigTest()),
-        TypeOrmModule.forFeature([User]),
+        TypeOrmModule.forFeature([User, Role]),
         PassportModule.register({
             defaultStrategy: 'jwt',
         }),
@@ -65,6 +66,7 @@ describe('Auth Controller', () => {
       const register: RegisterDto = {
         email: `jefer${Math.random()}${new Date().getMilliseconds()}@gmail.com`,
         password: "12345678",
+        roleId: 2,
         confirmPassword: "12345678"
       }
       const result = await controller.register(register); 

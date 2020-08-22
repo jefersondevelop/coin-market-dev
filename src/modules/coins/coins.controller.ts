@@ -11,6 +11,7 @@ import { CoinService } from "./coins.service";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiTags, ApiResponse, ApiBearerAuth, ApiBody } from "@nestjs/swagger";
 import { CoinResponse, CurrenciesResponse } from './schemas'
+import { RolesGuard } from "../utils/roles.guard";
 
 @ApiTags('coins')
 @Controller('coins')
@@ -37,7 +38,7 @@ export class CoinController {
 
     @ApiResponse({
         status: 200,
-        description: 'Response about USDC Exchange.',
+        description: 'Response about Currency Exchanges.',
         type: CurrenciesResponse,
     })
     @ApiResponse({
@@ -62,9 +63,16 @@ export class CoinController {
             required: ['price', 'currency'],
         },
     })
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @Put('')
     async changeExchangeUSD(@Query('currency') currency : string, @Body('price') price : number) {
         return this.coinService.changeExchangeUSD(currency, price)
+    }
+
+    @Get('/convertCurrency')
+    async convertCurrency(@Query('from') currencyFrom : string, @Query('to') currencyTo : string) {
+        return this.coinService.convertCurrency(currencyFrom, currencyTo)
     }
 
 }

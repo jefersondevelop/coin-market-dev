@@ -42,11 +42,15 @@ export class AuthController {
     })
     @ApiResponse({
         status: 409,
-        description: 'Email has been token.',
+        description: 'Email has been token. || Role admin can not be used.',
     })
     @ApiResponse({
         status: 400,
         description: 'Bad Request about some empty or wrong field.',
+    })
+    @ApiResponse({
+        status: 404,
+        description: 'Role was not found.',
     })
     @Post("/register")
     async register(@Body() RegisterDto: RegisterDto) {

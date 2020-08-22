@@ -15,11 +15,13 @@ import { RegisterDto } from './dto/register.dto';
 import { User } from '../../entities/user.entity';
 import { PayLoad } from './jwt-payload.interface';
 import { genSalt, hash, compare } from 'bcryptjs';
+import { Role } from "../../entities/role.entity";
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User) private readonly authRepository: Repository<User>,
+    @InjectRepository(Role) private readonly roleRepository: Repository<Role>,
     private readonly jwtService: JwtService
   ) {}
 
@@ -28,7 +30,8 @@ export class AuthService {
     
     const user_exist = await this.authRepository.findOne({
       where: [{ Email: username }],
-      select: ['Id', 'Email', 'Password', 'Status']
+      select: ['Id', 'Email', 'Password', 'Status'],
+      relations: ['role']
     });
     
     if (!user_exist) {
@@ -43,6 +46,7 @@ export class AuthService {
 
     const payload: PayLoad = {
       username: user_exist.Email,
+      roleId: user_exist.role.Id,
       id: user_exist.Id
     };
 
@@ -55,8 +59,7 @@ export class AuthService {
 
   async register(RegisterDto: RegisterDto) {
 
-    
-    const { email, password, confirmPassword } = RegisterDto;
+    const { email, password, confirmPassword, roleId } = RegisterDto;
 
     if(password !== confirmPassword)
       throw new BadRequestException('Password and confirmPassword must be equals.');
@@ -68,12 +71,21 @@ export class AuthService {
     if(user_exist)
       throw new ConflictException('Email has been token.')
 
+    const role = await this.roleRepository.findOne(roleId);
+
+    if(!role)
+      throw new NotFoundException('Role was not found.')
+
+    if(role.Name.toUpperCase() === 'ADMINISTRADOR')
+      throw new ConflictException('This Role can not be used');
+
     let user = new User();
 
     user.Email = email;
     const salt = await genSalt(10);
     user.Password = await hash(password, salt);
-    
+    user.role = role;
+
     let user_saved = await user.save();
     
     delete user_saved.Password;

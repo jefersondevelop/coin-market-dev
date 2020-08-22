@@ -13,6 +13,8 @@ describe('Auth Controller', () => {
 
   jest.setTimeout(MAX_SAFE_TIMEOUT);
 
+  // TEST WITH NO DB DEPENDENCY CASE
+
   class RepoCoinFake {
     
     public coin 
@@ -21,7 +23,7 @@ describe('Auth Controller', () => {
       this.coin = {
         Id: 0,
         Name: 'Coin for test',
-        ValueUSD: 1000058,
+        Value: 1000058,
         save: () => {
           return this.coin
         }
@@ -36,7 +38,7 @@ describe('Auth Controller', () => {
       if(object && object.where && object.where.Name){
         if(object.where.Name !== 'KNOW_COIN')
           return null;
-        this.coin = Object.assign({}, this.coin, { ValueUSD: 1500 })
+        this.coin = Object.assign({}, this.coin, { Value: 1500 })
         return this.coin
       }
       return this.coin;
@@ -73,7 +75,7 @@ describe('Auth Controller', () => {
 
   describe('Coin Exchanges', () => {
 
-    it('Get currencies available', async () => {
+    it('Should get currencies available', async () => {
 
       let response = await controller.getCurrenciesAvailable();
 
@@ -81,7 +83,7 @@ describe('Auth Controller', () => {
 
     })
 
-    it('Get currencies balance based on USDC', async () => {
+    it('Should get currencies balance based on USDC', async () => {
 
       let response = await controller.marketCoinUSD();
 
@@ -89,9 +91,29 @@ describe('Auth Controller', () => {
 
     })
 
-    it('Update currency', async () => {
+    it('Should update currency', async () => {
+
       let response = await controller.changeExchangeUSD('KNOW_COIN', 1500);
+
       expect(response.newPrice).toBe(1500);
+
+    })
+
+    it('Should convert BTC TO BS currency', async () => {
+
+      let response = await controller.convertCurrency('BTC', 'bs');
+
+      expect(response.status).toBe(200);
+      
+    })
+
+    it('Should return an error because currency was not found to convert.', async () => {
+      try {
+        let response = await controller.convertCurrency('YUANG', 'BS');
+        expect(response).toBe(null); 
+      } catch (error) {
+        expect(error.status).toBe(404)
+      }
     })
 
   })

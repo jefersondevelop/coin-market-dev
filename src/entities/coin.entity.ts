@@ -15,11 +15,11 @@ export class Coin extends BaseEntity {
     })
     Name:string;    
 
-    @Column("int",{ 
+    @Column("float8",{ 
         nullable:true,  
-        name:"ValueUSD"
+        name:"Value"
     })
-    ValueUSD:number;
+    Value:number;
     
 }
     

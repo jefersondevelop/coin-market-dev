@@ -7,6 +7,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "../../entities/user.entity";
 import { PassportModule } from '@nestjs/passport';
 import { configService } from '../../config/config.service';
+import { Role } from "../../entities/role.entity";
 
 describe("AuthService", () => {
   let service: AuthService;
@@ -18,7 +19,7 @@ describe("AuthService", () => {
         PassportModule.register({
           defaultStrategy: 'jwt'
         }),
-        TypeOrmModule.forFeature([User]),
+        TypeOrmModule.forFeature([User, Role]),
         JwtModule.registerAsync({
           useFactory(){
             return {
