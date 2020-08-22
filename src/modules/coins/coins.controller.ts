@@ -70,19 +70,8 @@ export class CoinController {
         return this.coinService.changeExchangeUSD(currency, price)
     }
 
-    @ApiBody({
-        schema: {
-            properties: {
-                ammount: {
-                    type: 'number',
-                    default: '1',
-                },
-            },
-            required: ['ammount'],
-        },
-    })
     @Get('/convertCurrency')
-    async convertCurrency(@Query('from') currencyFrom : string, @Query('to') currencyTo : string, @Body('ammount') ammount : number) {
+    async convertCurrency(@Query('from') currencyFrom : string, @Query('to') currencyTo : string, @Query('ammount') ammount : number) {
         return this.coinService.convertCurrency(currencyFrom, currencyTo, ammount)
     }
 
