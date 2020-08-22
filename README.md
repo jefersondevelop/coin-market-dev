@@ -89,3 +89,11 @@ Admin can update any currency exchange.
 ```
 
 
+```
+POST /coins/convertCurrency
+
+Convert currency from ONE to ANOTHER.
+
+```
+
+More services you can see on swaggers
